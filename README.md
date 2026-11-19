@@ -12,23 +12,23 @@
 </p>
 
 <p align="center">
-  <a href="https://zjuscl.github.io/TwinLab-Bench"><img alt="Project Page" src="assets/readme-project-page-badge.svg"></a>
+  <a href="https://twinlab-bench.github.io/"><img alt="Project Page" src="assets/readme-project-page-badge.svg"></a>
   <a href="https://huggingface.co/spaces/ZJUSCL/TwinLab-Bench_Leaderboard"><img alt="Leaderboard" src="assets/readme-leaderboard-badge.svg"></a>
-  <a href="https://zjuscl.github.io/TwinLab-Bench/#all"><img alt="Task Dashboard" src="assets/readme-task-dashboard-badge.svg"></a>
+  <a href="https://twinlab-bench.github.io/#all"><img alt="Task Dashboard" src="assets/readme-task-dashboard-badge.svg"></a>
   <a href="https://huggingface.co/datasets/ZJUSCL/TwinLab-Bench"><img alt="Dataset" src="assets/readme-dataset-badge.svg"></a>
 </p>
 
 ## Overview
 
-[TwinLab-Bench](https://zjuscl.github.io/TwinLab-Bench) is a benchmark that evaluates AI scientists on experiments that they design themselves. Each task comes from the records of a real laboratory. The agent receives the notebooks, raw data, and interim conclusions that the laboratory had at one point of its work, requests the experiments that it designs within a budget, and submits a report. The report is scored by comparison with a hidden answer taken from what the laboratory later found.
+[TwinLab-Bench](https://twinlab-bench.github.io/) is a benchmark that evaluates AI scientists on experiments that they design themselves. Each task comes from the records of a real laboratory. The agent receives the notebooks, raw data, and interim conclusions that the laboratory had at one point of its work, requests the experiments that it designs within a budget, and submits a report. The report is scored by comparison with a hidden answer taken from what the laboratory later found.
 
 Each task has its own TwinLab agent, which serves as the environment and executes the experiments that the tested agent designs. The TwinLab agent returns the recorded result for an experiment that the laboratory performed, and runs calculators built from the records of the laboratory for the other experiments.
 
-These tasks remain hard for frontier models, and the strongest model, Claude Fable 5.2, averages a score of 45.0 out of 100. Compare models on the [leaderboard](https://huggingface.co/spaces/ZJUSCL/TwinLab-Bench_Leaderboard), browse every task and one run of it on the [task dashboard](https://zjuscl.github.io/TwinLab-Bench/#all), and download the tasks from [Hugging Face](https://huggingface.co/datasets/ZJUSCL/TwinLab-Bench). To report a problem with a task, [open an issue](https://github.com/ZJUSCL/TwinLab-Bench/issues).
+These tasks remain hard for frontier models, and the strongest model, Claude Fable 5.2, averages a score of 45.0 out of 100. Compare models on the [leaderboard](https://huggingface.co/spaces/ZJUSCL/TwinLab-Bench_Leaderboard), browse every task and one run of it on the [task dashboard](https://twinlab-bench.github.io/#all), and download the tasks from [Hugging Face](https://huggingface.co/datasets/ZJUSCL/TwinLab-Bench). To report a problem with a task, [open an issue](https://github.com/ZJUSCL/TwinLab-Bench/issues).
 
 ## Task Coverage
 
-TwinLab-Bench contains **52** tasks from laboratories in the physical sciences (20 tasks), the life sciences (20 tasks), and engineering (12 tasks). The [task dashboard](https://zjuscl.github.io/TwinLab-Bench/#all) lists all of them.
+TwinLab-Bench contains **52** tasks from laboratories in the physical sciences (20 tasks), the life sciences (20 tasks), and engineering (12 tasks). The [task dashboard](https://twinlab-bench.github.io/#all) lists all of them.
 
 <p align="center">
   <img src="figures/tasks.png" width="900" alt="The 52 tasks of TwinLab-Bench by division and department, with four example tasks">
@@ -96,7 +96,7 @@ If you find this work useful, please cite it.
   title  = {{TwinLab-Bench}: Evaluating {AI} Scientists in Agentic Twins of Real Labs},
   author = {Wan, Yang and Zhu, Linchao},
   year   = {2026},
-  url    = {https://zjuscl.github.io/TwinLab-Bench}
+  url    = {https://twinlab-bench.github.io/}
 }
 ```
 
