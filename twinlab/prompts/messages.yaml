@@ -1,0 +1,55 @@
+# Short fixed texts the actor reads. Long prompts are the .md files next to this one.
+
+# ---- sent by the harness as a new user message when the actor stops or is resumed (twinlab/actors/base.py) ----
+nudge: >-
+  No human is available to answer questions or give approval. Continue working autonomously with the lab tools. When
+  you are done, call submit_final_report.
+
+outage_resume: >-
+  The lab had a technical outage. Your last lab request was NOT processed: nothing was done, nothing was consumed,
+  and no lab days were charged. Resubmit it if you still need it, and continue working autonomously with the lab
+  tools. When you are done, call submit_final_report.
+
+interrupted_resume: >-
+  Your session was interrupted by a technical problem unrelated to the lab (all your lab results so far stand).
+  Continue where you left off, working autonomously with the lab tools. When you are done, call submit_final_report.
+
+# ---- inside lab tool results (twinlab/lab.py) ----
+budget_exhausted: >-
+  LAB BUDGET EXHAUSTED: the lab is now closed and no further lab requests will be accepted. Call submit_final_report
+  immediately.
+
+zero_budget: >-
+  NO LAB BUDGET: this session has a lab budget of 0, so the lab accepts no requests. Work from the handover files and
+  your own analysis, then call submit_final_report.
+
+budget_used_up_free_only: >-
+  LAB BUDGET USED UP: requests that cost {unit} are no longer accepted; requests that cost nothing (lookups, a
+  separate allocation the lab gives) still are. Call submit_final_report when you are done.
+
+not_simulatable: >-
+  SIMULATION LIMIT (not an experimental result): this request is outside what the simulated lab can model. Nothing
+  was done and nothing was consumed. This says nothing about how the experiment would turn out; choose another
+  experiment if you still need this information.
+
+not_performed: >-
+  NOT PERFORMED (not an experimental result): nothing was done or consumed for the items below. A SIMULATION LIMIT
+  item is outside what the simulated lab can model and says nothing about how it would turn out; a LAB item gives
+  the lab's reason:
+
+files_delivered: >-
+  FILES DELIVERED to your working directory by this request:
+
+checkpoint_stop: >-
+  STOPPED AT CHECKPOINT: {cp}. The lab stopped here, as it does at every checkpoint. These requested steps were NOT
+  done and nothing was charged or consumed for them; send them again if you still want them:
+
+# ---- checkpoints mode memo (twinlab/lab.py): shown at every stop, same text, never conditional on what happened ----
+checkpoint_memo: >-
+  Before your next request, write in your reply what the observations so far show and what you will do next.
+
+# ---- in the task brief when checkpoints are enforced (twinlab/case.py); {stops} is the list of checkpoints ----
+brief_checkpoints: >-
+  The lab works like a real bench, one stage at a time: a request is carried out only up to the next checkpoint,
+  where the lab stops and reports what is in front of it. Steps after that checkpoint are not done and cost nothing;
+  send them again in a new request if you still want them. The lab stops after:{stops}

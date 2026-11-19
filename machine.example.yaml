@@ -1,0 +1,43 @@
+# Copy to machine.yaml (never commit it) and fill in. Read by twinlab/settings.py. Every path must exist.
+
+claude:
+  shell: /usr/bin/zsh                       # SHELL for Claude Code's Bash tool; must print nothing on stderr when started
+  bin: ~/.local/bin/claude                  # tested with Claude Code 2.1.319
+  install_dir: ~/.local/share/claude
+  config_dir: ~/.claude                     # Claude Code config dir (CLAUDE_CONFIG_DIR); signed in only for a Claude actor
+  launch_flags: ["--enable-auto-mode", "--dangerously-skip-permissions"]
+  proxy: ""                                 # HTTP(S)_PROXY for every Claude Code process; empty for none
+  no_proxy: "localhost,127.0.0.0/8"
+
+codex:                                      # the values are used only with --actor-agent codex; the keys must exist
+  bin: ~/.local/bin/codex                   # tested with Codex 0.166
+  model_catalog: ~/.codex/model_catalog.json   # Codex model_catalog_json, for model names Codex does not know
+  provider:                                 # a [model_providers.<name>] table of Codex's config.toml
+    name: openai
+    base_url: https://api.openai.com/v1
+    env_key: OPENAI_API_KEY
+    wire_api: responses
+  api_key: sk-...
+  web_search: live                          # live | cached | disabled
+  proxy: null                               # null: the provider is reached directly
+
+model_backends:                             # non-Claude models inside Claude Code; one entry per model id
+  deepseek-flash:
+    endpoint: deepseek                      # URL and key come from DEEPSEEK_API_KEY and DEEPSEEK_BASE_URL_* (README.md);
+                                            # without this line, write base_url and auth_token here
+    llm_proxy:                              # used only when DEEPSEEK_BASE_URL_OPENAI is set (scripts/llm_proxy.py)
+      url: http://localhost:4001
+      master_key: sk-local-twinlab          # the proxy's own token (--master-key), not the DeepSeek key
+    proxy: null                             # null: reached directly
+    config_dir: ~/.config/twinlab/claude-ds # an empty directory for the TwinLab and judge sessions
+    cli_env:
+      CLAUDE_CODE_MAX_RETRIES: "110"
+      CLAUDE_CODE_MAX_CONTEXT_TOKENS: "1000000"   # the model's real window; unknown models default to 200k
+      CLAUDE_CODE_MAX_OUTPUT_TOKENS: "128000"     # thinking counts as output; the default 32k cuts judge answers
+
+actor_default_effort: {}                    # used when --actor-effort is not given, e.g. claude-opus-5-5: high
+
+sandbox:
+  bwrap: /usr/bin/bwrap
+  ro_binds: [~/.local/bin, ~/.local/share/claude, ~/miniconda3]   # agent binaries and the Python the actor may use
+  # own_proc: true                          # optional; unset = detected at start (false inside Docker, where bwrap cannot mount proc)

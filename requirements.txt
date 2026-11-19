@@ -1,0 +1,8 @@
+pyyaml
+pillow
+jsonschema
+numpy
+pandas
+scipy
+litellm[proxy]==1.108.0
+huggingface_hub
