@@ -85,7 +85,7 @@ ACTOR_DEFAULT_EFFORT = dict(_m["actor_default_effort"])
 
 # ---- Actor sandbox (bubblewrap) ----
 BWRAP = _path(_m["sandbox"]["bwrap"])
-# read-only inside the sandbox: the agent binaries and the Python the actor may use for analysis
+# read-only inside the sandbox: the agent binaries (sandbox.py adds the Python running the benchmark)
 SANDBOX_RO_BINDS = [_path(p) for p in _m["sandbox"]["ro_binds"]]
 # true: the actor gets its own PID namespace and /proc, so host command lines (case id, paths) are invisible.
 # false where bwrap cannot mount a new proc ("Can't mount proc on /newroot/proc", e.g. inside a Docker container);

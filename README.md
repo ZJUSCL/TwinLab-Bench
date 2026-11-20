@@ -50,13 +50,6 @@ cp machine.example.yaml machine.yaml   # edit the paths in this file
 mkdir -p ~/.config/twinlab/claude-ds
 ```
 
-The tested agent runs in a bubblewrap sandbox in which `$HOME`, `/tmp`, and the repository are empty, and the TwinLab and judge agents get their own `/tmp`. Three settings follow from this.
-
-- Keep the repository and the `--out` directory outside `/tmp`.
-
-- The Python that runs the benchmark also runs the guard hook of the agent inside the sandbox, so its directory must be listed in `sandbox.ro_binds` of `machine.yaml`. For a virtual environment inside the repository, for example `.venv`, add that directory.
-- To evaluate a Claude model, sign in Claude Code with the config directory that `claude.config_dir` names, for example `CLAUDE_CONFIG_DIR=~/.claude claude`. A Claude Code started without `CLAUDE_CONFIG_DIR` keeps its login in `~/.claude.json` instead, which the benchmark does not read.
-
 DeepSeek-flash serves as the TwinLab agent and the judge agent through Claude Code. By default Claude Code calls DeepSeek's Anthropic-format API at `https://api.deepseek.com/anthropic` (set `DEEPSEEK_BASE_URL_ANTHROPIC` for another endpoint).
 
 ```bash

@@ -39,6 +39,5 @@ actor_default_effort: {}                    # used when --actor-effort is not gi
 
 sandbox:
   bwrap: /usr/bin/bwrap
-  ro_binds: [~/.local/bin, ~/.local/share/claude, ~/miniconda3]   # agent binaries and the Python that runs the
-                                            # benchmark (its venv too); the agent's guard hook runs with that Python
+  ro_binds: [~/.local/bin, ~/.local/share/claude]   # agent binaries; the Python running the benchmark is added itself
   # own_proc: true                          # optional; unset = detected at start (false inside Docker, where bwrap cannot mount proc)

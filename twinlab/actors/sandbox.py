@@ -2,7 +2,7 @@
 
 Inside the sandbox the host filesystem is read-only, and $HOME, /tmp, the repository and the run output root are
 empty tmpfs mounts. The actor sees only:
-- the agent binaries and Python (settings.SANDBOX_RO_BINDS, read-only),
+- the agent binaries (settings.SANDBOX_RO_BINDS) and the Python running the benchmark, read-only,
 - its own per-run config dir (bound where the agent CLI expects its config); the guard hook files and the settings
   that install it are bound read-only on top, so the actor cannot switch the guard off,
 - the per-run workspace, mounted at /tmp/workspace and used as the working directory.
@@ -38,13 +38,10 @@ def out_root(ws: Path) -> Path:
 def bwrap_prefix(binds: list, ws: Path, protected: list) -> list:
     """Command prefix that runs a program in the sandbox. binds: [(host_path, sandbox_path)], writable.
     protected: [(host_file, sandbox_path)] bound read-only after binds (files inside a writable bind)."""
-    # the guard hook runs sys.executable inside the sandbox; a venv in the repository or under $HOME is hidden there
-    # unless a ro_binds entry covers it, and the hook would then fail without stopping the actor
-    exe = Path(sys.executable)
-    hidden = [settings.HOME, Path("/tmp"), settings.ROOT.resolve(), out_root(ws).resolve()]
-    assert not any(exe.is_relative_to(h) for h in hidden) or any(exe.is_relative_to(p) for p in settings.SANDBOX_RO_BINDS), \
-        (f"the Python running the benchmark ({exe}) is hidden inside the actor sandbox ($HOME, /tmp and the "
-         f"repository are empty there): add its directory (e.g. the venv) to machine.yaml sandbox.ro_binds")
+    # the guard hook runs sys.executable inside the sandbox, so the harness Python (venv and base interpreter) is
+    # bound read-only even when it lies under $HOME or in the repository; under /tmp it would be hidden again below
+    py = sorted({Path(sys.prefix).resolve(), Path(sys.base_prefix).resolve()})
+    assert not any(d.is_relative_to("/tmp") for d in py), f"the Python running the benchmark ({py}) is under /tmp"
     args = [str(settings.BWRAP), "--die-with-parent", "--unshare-ipc", "--ro-bind", "/", "/", "--dev", "/dev"]
     if settings.SANDBOX_OWN_PROC:
         args += ["--unshare-pid", "--proc", "/proc"]
@@ -52,7 +49,7 @@ def bwrap_prefix(binds: list, ws: Path, protected: list) -> list:
     for d in (settings.ROOT, out_root(ws)):   # under $HOME they are already hidden
         if not d.resolve().is_relative_to(settings.HOME):
             args += ["--tmpfs", str(d.resolve())]
-    for p in settings.SANDBOX_RO_BINDS:
+    for p in [*settings.SANDBOX_RO_BINDS, *py]:
         args += ["--ro-bind", str(p), str(p)]
     for src, dst in binds:
         args += ["--bind", str(src), str(dst)]

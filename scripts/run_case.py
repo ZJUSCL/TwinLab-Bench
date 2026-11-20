@@ -19,6 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))   # run from a chec
 from twinlab.actors import AGENTS          # noqa: E402
 from twinlab.case import CHECKPOINT_MODES, Case   # noqa: E402
 from twinlab.run import one_run, run_config, summarize   # noqa: E402
+from twinlab.settings import ROOT          # noqa: E402
 
 ACTOR_EFFORTS = ["low", "medium", "high", "xhigh", "max"]   # claude --effort levels (CLI 2.1.296 --help)
 
@@ -41,7 +42,8 @@ def main():
     root = (a.out / case.id / time.strftime("%Y%m%d-%H%M%S")).resolve()
     # the environment and the judge get their own /tmp (twinlab.claude_cli.private_tmp_prefix), so the run directory
     # must not be under the host /tmp
-    assert not root.is_relative_to("/tmp"), f"--out {a.out} is under /tmp; put the runs (and the repository) elsewhere"
+    assert not root.is_relative_to("/tmp"), f"--out {a.out} is under /tmp; put the runs elsewhere"
+    assert not ROOT.is_relative_to("/tmp"), f"the repository {ROOT} is under /tmp; move it elsewhere"
     print(f"[run_case] {root}", flush=True)
     failed = []
     for i in range(a.n_runs):
