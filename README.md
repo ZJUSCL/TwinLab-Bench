@@ -12,6 +12,7 @@
 </p>
 
 <p align="center">
+  <a href="https://arxiv.org/abs/2611.26248"><img alt="Paper" src="assets/readme-paper-badge.svg"></a>
   <a href="https://twinlab-bench.github.io/"><img alt="Project Page" src="assets/readme-project-page-badge.svg"></a>
   <a href="https://huggingface.co/spaces/ZJUSCL/TwinLab-Bench_Leaderboard"><img alt="Leaderboard" src="assets/readme-leaderboard-badge.svg"></a>
   <a href="https://twinlab-bench.github.io/#all"><img alt="Task Dashboard" src="assets/readme-task-dashboard-badge.svg"></a>
@@ -93,10 +94,11 @@ If you find this work useful, please cite it.
 
 ```bibtex
 @article{wan2026twinlabbench,
-  title  = {{TwinLab-Bench}: Evaluating {AI} Scientists in Agentic Twins of Real Labs},
-  author = {Wan, Yang and Zhu, Linchao},
-  year   = {2026},
-  url    = {https://twinlab-bench.github.io/}
+  title   = {{TwinLab-Bench}: Evaluating {AI} Scientists in Agentic Twins of Real Labs},
+  author  = {Wan, Yang and Zhu, Linchao},
+  journal = {arXiv preprint arXiv:2611.26248},
+  year    = {2026},
+  url     = {https://twinlab-bench.github.io/}
 }
 ```
 
