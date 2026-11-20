@@ -12,6 +12,7 @@ line names the case, other runs' agents) are invisible; without it their command
 harness inherited from the user's shell stay outside.
 The network is shared with the host (the actor needs its API and the lab MCP server on 127.0.0.1).
 """
+import sys
 from pathlib import Path
 
 from .. import settings
@@ -37,6 +38,13 @@ def out_root(ws: Path) -> Path:
 def bwrap_prefix(binds: list, ws: Path, protected: list) -> list:
     """Command prefix that runs a program in the sandbox. binds: [(host_path, sandbox_path)], writable.
     protected: [(host_file, sandbox_path)] bound read-only after binds (files inside a writable bind)."""
+    # the guard hook runs sys.executable inside the sandbox; a venv in the repository or under $HOME is hidden there
+    # unless a ro_binds entry covers it, and the hook would then fail without stopping the actor
+    exe = Path(sys.executable)
+    hidden = [settings.HOME, Path("/tmp"), settings.ROOT.resolve(), out_root(ws).resolve()]
+    assert not any(exe.is_relative_to(h) for h in hidden) or any(exe.is_relative_to(p) for p in settings.SANDBOX_RO_BINDS), \
+        (f"the Python running the benchmark ({exe}) is hidden inside the actor sandbox ($HOME, /tmp and the "
+         f"repository are empty there): add its directory (e.g. the venv) to machine.yaml sandbox.ro_binds")
     args = [str(settings.BWRAP), "--die-with-parent", "--unshare-ipc", "--ro-bind", "/", "/", "--dev", "/dev"]
     if settings.SANDBOX_OWN_PROC:
         args += ["--unshare-pid", "--proc", "/proc"]

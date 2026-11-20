@@ -4,7 +4,7 @@ claude:
   shell: /usr/bin/zsh                       # SHELL for Claude Code's Bash tool; must print nothing on stderr when started
   bin: ~/.local/bin/claude                  # tested with Claude Code 2.1.319
   install_dir: ~/.local/share/claude
-  config_dir: ~/.claude                     # Claude Code config dir (CLAUDE_CONFIG_DIR); signed in only for a Claude actor
+  config_dir: ~/.claude                     # Claude Code config dir; for a Claude actor sign in with CLAUDE_CONFIG_DIR=~/.claude claude
   launch_flags: ["--enable-auto-mode", "--dangerously-skip-permissions"]
   proxy: ""                                 # HTTP(S)_PROXY for every Claude Code process; empty for none
   no_proxy: "localhost,127.0.0.0/8"
@@ -39,5 +39,6 @@ actor_default_effort: {}                    # used when --actor-effort is not gi
 
 sandbox:
   bwrap: /usr/bin/bwrap
-  ro_binds: [~/.local/bin, ~/.local/share/claude, ~/miniconda3]   # agent binaries and the Python the actor may use
+  ro_binds: [~/.local/bin, ~/.local/share/claude, ~/miniconda3]   # agent binaries and the Python that runs the
+                                            # benchmark (its venv too); the agent's guard hook runs with that Python
   # own_proc: true                          # optional; unset = detected at start (false inside Docker, where bwrap cannot mount proc)

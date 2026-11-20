@@ -48,10 +48,14 @@ class ClaudeCodeActor(ActorAgent):
     def prepare(self, case, model):
         guard.install(self.cfg / "hooks", case)
         if model_backend(model) is None:
-            host = json.loads((settings.CLAUDE_CONFIG_DIR / ".claude.json").read_text())
+            # a Claude Code started without CLAUDE_CONFIG_DIR keeps its login in ~/.claude.json, not in the config dir
+            login = settings.CLAUDE_CONFIG_DIR / ".claude.json"
+            assert login.is_file(), (f"{model}: {login} does not exist; sign in Claude Code with this config dir: "
+                                     f"CLAUDE_CONFIG_DIR={settings.CLAUDE_CONFIG_DIR} claude")
+            host = json.loads(login.read_text())
             slim = {k: host[k] for k in CLAUDE_JSON_KEEP if k in host}
-            assert "oauthAccount" in slim, \
-                f"{model}: the .claude.json in {settings.CLAUDE_CONFIG_DIR} has no oauthAccount; sign in Claude Code"
+            assert "oauthAccount" in slim, (f"{model}: {login} has no oauthAccount; sign in Claude Code with this "
+                                            f"config dir: CLAUDE_CONFIG_DIR={settings.CLAUDE_CONFIG_DIR} claude")
             (self.cfg / ".claude.json").write_text(json.dumps(slim, indent=1))
             (self.cfg / ".credentials.json").touch()     # bind-mount target for the real credentials
             print(f"[actor] {model}: Claude model, login of {settings.CLAUDE_CONFIG_DIR} mounted", flush=True)

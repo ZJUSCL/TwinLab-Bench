@@ -39,6 +39,9 @@ def main():
     a = ap.parse_args()
     case = Case(a.case, a.checkpoints)
     root = (a.out / case.id / time.strftime("%Y%m%d-%H%M%S")).resolve()
+    # the environment and the judge get their own /tmp (twinlab.claude_cli.private_tmp_prefix), so the run directory
+    # must not be under the host /tmp
+    assert not root.is_relative_to("/tmp"), f"--out {a.out} is under /tmp; put the runs (and the repository) elsewhere"
     print(f"[run_case] {root}", flush=True)
     failed = []
     for i in range(a.n_runs):
